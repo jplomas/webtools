@@ -1,0 +1,36 @@
+{
+  "name": "qrl-webtools",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && npm run postbuild",
+    "postbuild": "cd dist && find . -type f ! -name 'index.html' -delete",
+    "serve": "vite preview",
+    "postinstall": "cp -r node_modules/@theqrl/qrllib-browserify/dist/qrllib.js public/qrllib.js"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.7.2",
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
+    "@fortawesome/vue-fontawesome": "^3.0.8",
+    "@theqrl/qrllib-browserify": "^1.0.0",
+    "@theqrl/validate-qrl-address": "^3.0.1",
+    "buffer": "^6.0.3",
+    "jspdf": "^2.5.2",
+    "print-js": "^1.6.0",
+    "vue": "^3.5.26",
+    "vue-router": "^4.5.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.18",
+    "@vitejs/plugin-vue": "^6.0.3",
+    "@vue/compiler-sfc": "^3.5.26",
+    "daisyui": "^5.5.14",
+    "lightningcss": "^1.30.2",
+    "postcss": "^8.5.6",
+    "postcss-custom-properties": "^14.0.6",
+    "tailwindcss": "^4.1.18",
+    "vite": "^7.3.0",
+    "vite-plugin-singlefile": "^2.3.0"
+  }
+}
