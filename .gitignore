@@ -90,7 +90,6 @@ out
 
 # Gatsby files
 .cache/
-public/qrllib.js
 
 # Vuepress build output
 .vuepress/dist
@@ -128,4 +127,3 @@ ehthumbs.db
 
 # qrl-wallet specific
 qrllib.js
-wallet-worker.js
