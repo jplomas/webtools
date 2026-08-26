@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="min-h-screen flex flex-col">
+  <div class="min-h-screen flex flex-col">
     <nav class="navbar bg-neutral shadow-lg">
       <div class="navbar-start">
         <router-link to="/" class="btn btn-ghost px-2 py-1 text-xl text-neutral-content">
@@ -88,11 +88,11 @@
         <img class="h-14" :src="logoSvg" alt="QRL Logo">
         <div v-if="qrllibLoaded" class="text-left">
           <p class="text-sm text-neutral-content/80"><font-awesome-icon icon="check" class="text-success mr-1" />QRL Library loaded</p>
-          <p class="text-xs text-neutral-content/60">qrllib v1.2.4</p>
+          <p class="text-xs text-neutral-content/60">qrllib v{{ qrllibVersion }}</p>
         </div>
         <div v-else-if="qrllibLoadFailed" class="text-left">
           <p class="text-sm text-error"><font-awesome-icon icon="triangle-exclamation" class="mr-1" />Failed to load QRL Library</p>
-          <p class="text-xs text-neutral-content/60">Please refresh the page</p>
+          <p class="text-xs text-neutral-content/60">Do not use wallet features. Re-download and verify the release.</p>
         </div>
       </div>
     </footer>
@@ -100,7 +100,6 @@
 </template>
 
 <script>
-/* global QRLLIB */
 import logoSvgRaw from '/logo.svg?raw';
 
 const MAX_QRLLIB_RETRIES = 100; // 100 retries * 100ms = 10 seconds max
@@ -111,6 +110,7 @@ export default {
     return {
       qrllibLoaded: false,
       qrllibLoadFailed: false,
+      qrllibVersion: __QRLLIB_VERSION__,
       logoSvg: 'data:image/svg+xml;base64,' + btoa(logoSvgRaw)
     };
   },
@@ -132,7 +132,14 @@ export default {
       if (this.isDestroyed) return;
 
       if (typeof QRLLIB !== 'undefined' && typeof QRLLIB.str2bin === 'function') {
-        this.qrllibLoaded = true;
+        try {
+          const probe = QRLLIB.str2bin('qrl');
+          this.qrllibLoaded = typeof probe?.size === 'function' && probe.size() === 3;
+          this.qrllibLoadFailed = !this.qrllibLoaded;
+        } catch {
+          this.qrllibLoaded = false;
+          this.qrllibLoadFailed = true;
+        }
         this.qrllibTimerId = null;
       } else if (this.qrllibRetries < MAX_QRLLIB_RETRIES) {
         this.qrllibRetries++;

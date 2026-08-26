@@ -1,0 +1,20 @@
+# SSH allowed-signers for release tag verification.
+#
+# The release workflow runs:
+#
+#     git config gpg.ssh.allowedSignersFile .github/allowed-signers
+#     git -c gpg.format=ssh verify-tag "$TAG"
+#
+# and refuses to publish if the tag is not signed by a key listed here. The
+# workflow fails closed when this file is absent or empty, so the first release
+# after this change will stop with a clear error rather than publishing
+# unverified.
+#
+# ---------------------------------------------------------------------------
+# FORMAT — one line per key, multiple keys per maintainer supported
+# ---------------------------------------------------------------------------
+#
+#
+jp@theqrl.org      namespaces="git"	ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDDxjmwacZTwYiRCOozapgXHMlx8EkdFXPvXu0s02ZPz
+jp@theqrl.org      namespaces="git"	ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHR5keIPWIuGB1BzjS1P19mDW1bvM8dTQ0d0DESaqvyT
+

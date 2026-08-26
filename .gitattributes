@@ -1,0 +1,25 @@
+# Normalise line endings to LF in the working tree on every platform.
+#
+# Without this, Windows checks out text files as CRLF (core.autocrlf defaults
+# to true there) and those carriage returns flow straight through the build
+# into dist-offline/index.html. Measured on the 2026-08-03 cross-platform
+# matrix run: Linux and macOS produced byte-identical artefacts, while Windows
+# differed by exactly 70 bytes — the first at char 16, the newline after
+# <!DOCTYPE html>.
+#
+# That matters because RELEASE.md asks users to rebuild the offline artefact
+# and compare its SHA-256 against the published one. A checkout-time newline
+# rewrite makes that check fail on a genuine artefact, which trains people to
+# ignore mismatches — the one signal that would indicate a real compromise.
+* text=auto eol=lf
+
+# Never touch binary content.
+*.png   binary
+*.ico   binary
+*.svg   text eol=lf
+*.woff  binary
+*.woff2 binary
+
+# Shell scripts must keep LF or they will not execute on the runner.
+*.sh    text eol=lf
+

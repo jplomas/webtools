@@ -6,7 +6,7 @@
       <div class="space-y-8">
         <p>QRL Web Tools is a collection of browser-based utilities for the Quantum Resistant Ledger. For maximum security when generating wallets, it is designed to be used in an offline environment. It is recommended to use this software from a bootable OS (e.g. Desktop Ubuntu distribution) without any network connection.</p>
 
-        <p>To run offline, download the latest .zip file from the <a class="link link-primary" href="https://github.com/theQRL/webtools/releases">GitHub Releases</a> page, extract the zip then run the index.html file in your browser.</p>
+        <p>To run offline, download the latest zip and <code>mldsa-signatures.txt</code> from <a class="link link-primary" href="https://github.com/theQRL/webtools/releases/latest">GitHub Releases</a>, verify the ML-DSA-87 signature using the permanent context <code>qrl-webtools-github-releases-v1</code>, extract the zip, disconnect from the network, then open <code>index.html</code>. See the repository's <code>RELEASE.md</code> for the exact verification command.</p>
 
         <!-- Address Validator -->
         <div class="collapse collapse-arrow bg-base-100">
@@ -148,7 +148,7 @@
 
               <h3 class="font-semibold">Configuration Options:</h3>
               <ul class="list-disc list-inside space-y-1">
-                <li><strong>Hash Function:</strong> SHAKE_128 (default), SHAKE_256, or SHA2_256</li>
+                <li><strong>Hash Function:</strong> SHAKE_256 (default), SHAKE_128, or SHA2_256</li>
                 <li><strong>Tree Height:</strong> Determines the number of signatures available (default: 10 = 1,024 signatures)</li>
               </ul>
               <p>The defaults are suitable for most users. Higher tree heights provide more signatures but take longer to generate. Read more at <a class="link link-primary" href="https://docs.theqrl.org/wallet/basics/#qrl-web-wallet">the QRL docs site</a>.</p>
@@ -168,9 +168,11 @@
               <ul class="list-disc list-inside space-y-1">
                 <li><strong>Print:</strong> Print wallet details directly</li>
                 <li><strong>Save PDF:</strong> Download as a PDF document</li>
-                <li><strong>Save JSON (encrypted):</strong> Password-protected format compatible with the QRL web wallet (recommended)</li>
-                <li><strong>Save JSON (unencrypted):</strong> Plain format compatible with QRL web wallet and QRL nodes</li>
+                <li><strong>Save encrypted:</strong> QRL v3 envelope using scrypt (128 MiB work factor) and AES-256-GCM authenticated encryption. Weak passwords are refused (recommended).</li>
+                <li><strong>Save unencrypted:</strong> Plain wallet data inside the QRL v3 envelope. Use only when you have another secure storage layer.</li>
               </ul>
+
+              <p>The v3 format is cross-verified against <code>@theqrl/wallet-helpers</code>. Its exact compatibility contract is documented in <code>docs/v3-wallet-format.md</code>.</p>
 
               <h3 class="font-semibold mt-4">Regenerate from Existing:</h3>
               <p>You can also regenerate a wallet by entering an existing hexseed or mnemonic phrase. This is useful for verifying backups or recovering wallet details.</p>
