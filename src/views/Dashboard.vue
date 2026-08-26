@@ -1,48 +1,60 @@
 <template>
-  <div class="container mx-auto px-4 py-8">
-    <div class="text-center mb-10">
-      <h1 class="text-4xl font-bold mb-4">QRL Web Tools</h1>
-      <p class="text-lg text-base-content/70">A collection of browser-based tools for the Quantum Resistant Ledger</p>
-    </div>
+  <div class="container-site py-12 sm:py-16 lg:py-20">
+    <section class="max-w-3xl">
+      <p class="kicker">QRL utility suite</p>
+      <h1 class="text-balance text-hero/none font-semibold tracking-tight">Inspect, repair, and create QRL wallet data.</h1>
+      <p class="mt-5 max-w-[56ch] text-pretty text-lead/8 text-base-content/68">
+        Four focused tools in one self-contained file. Nothing leaves the browser, and the wallet generator works without a server.
+      </p>
+      <div class="mt-6 flex flex-wrap gap-2 text-sm/6">
+        <span class="badge badge-outline border-success/35 text-success">Offline capable</span>
+        <span class="badge badge-outline border-secondary/35 text-secondary">Single-file build</span>
+        <span class="badge badge-outline border-base-content/20">QRL v3 wallets</span>
+      </div>
+    </section>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+    <section class="mt-12 grid grid-cols-1 gap-4 md:grid-cols-2" aria-label="Available tools">
       <ToolCard
         to="/address"
         icon="magnifying-glass"
-        title="Address Validator"
-        description="Validate QRL addresses and view details like signature type, tree height, and hash function."
+        eyebrow="Inspect"
+        title="Address validator"
+        description="Check a QRL address and read its signature scheme, tree height, and hash function."
       />
       <ToolCard
         to="/mnemonic"
         icon="spell-check"
-        title="Mnemonic Validator"
-        description="Validate mnemonic phrases, check for invalid words, and detect common issues."
+        eyebrow="Repair"
+        title="Mnemonic validator"
+        description="Check all 34 words, find malformed input, and replace likely misspellings."
       />
       <ToolCard
         to="/hexseed"
         icon="fingerprint"
-        title="Hexseed Validator"
-        description="Validate hexseed format, check for invalid characters, whitespace, and length issues."
+        eyebrow="Check"
+        title="Hexseed validator"
+        description="Find whitespace, invalid characters, case problems, and incorrect seed lengths."
       />
       <ToolCard
         to="/wallet"
         icon="wallet"
-        title="Wallet Generator"
-        description="Generate new QRL wallets with various tree heights and hash functions. Export as PDF, JSON, or print."
+        eyebrow="Create"
+        title="Wallet generator"
+        description="Generate or restore an XMSS wallet, then save it in the authenticated QRL v3 format."
       />
-    </div>
+    </section>
 
-    <div class="mt-12 text-center">
-      <div class="alert alert-warning max-w-2xl mx-auto">
-        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-        </svg>
-        <div>
-          <h3 class="font-bold">Security Notice</h3>
-          <p class="text-sm">For maximum security when generating wallets, use these tools offline on an air-gapped computer.</p>
-        </div>
+    <aside class="mt-8 rounded-box border border-warning/25 bg-warning/8 p-5 sm:flex sm:items-start sm:gap-4">
+      <svg class="mt-0.5 size-5 shrink-0 text-warning" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+        <path d="M12 9v4m0 4h.01M10.3 4.9 2.8 18a2 2 0 0 0 1.7 3h15a2 2 0 0 0 1.7-3L13.7 4.9a2 2 0 0 0-3.4 0Z" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+      <div class="mt-3 sm:mt-0">
+        <h2 class="text-base/6 font-semibold">Generate wallets on an offline machine</h2>
+        <p class="mt-1 max-w-[68ch] text-sm/6 text-base-content/65">
+          Use a clean bootable OS, verify the release signature, and disconnect before creating or restoring a wallet.
+        </p>
       </div>
-    </div>
+    </aside>
   </div>
 </template>
 
@@ -51,8 +63,6 @@ import ToolCard from '@/components/shared/ToolCard.vue';
 
 export default {
   name: 'Dashboard',
-  components: {
-    ToolCard
-  }
+  components: { ToolCard },
 };
 </script>

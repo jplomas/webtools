@@ -84,7 +84,7 @@ while IFS= read -r url; do
   case "$url" in
     https://docs.theqrl.org/*|https://docs.theqrl.org) allowed=1 ;;
     https://github.com/theQRL/*) allowed=1 ;;
-    https://webtools.theqrl.org/*|https://webtools.theqrl.org) allowed=1 ;;
+    https://tools.theqrl.org/*|https://tools.theqrl.org) allowed=1 ;;
   esac
   [ "$allowed" = 0 ] && unexpected="$unexpected$url"$'\n'
 done <<< "$remote_hits"

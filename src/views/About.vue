@@ -1,11 +1,16 @@
 <template>
-  <div class="card bg-base-200 shadow-lg mx-auto my-8 max-w-4xl">
-    <div class="card-body">
-      <h1 class="card-title text-3xl mb-4">About</h1>
+  <div class="tool-page">
+    <div class="tool-heading">
+      <div class="kicker">Project</div>
+      <h1>About</h1>
+      <p>Open-source browser tools for the Quantum Resistant Ledger.</p>
+    </div>
+    <div class="card tool-panel">
+      <div class="card-body max-w-none text-base-content/75">
 
       <div class="space-y-4">
         <p>
-          This is MIT Licensed software.
+          This software is licensed under the MIT License.
           <br /><br />
           <strong>Copyright (c) 2019-2025 Die QRL Stiftung (The QRL Foundation)</strong>
         </p>
@@ -24,4 +29,5 @@
       </div>
     </div>
   </div>
+</div>
 </template>

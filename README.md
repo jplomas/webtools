@@ -9,8 +9,8 @@ A collection of browser-based utilities for the Quantum Resistant Ledger:
 
 ## Use the offline release
 
-Download the latest `qrl-webtools-<version>.zip` and
-`mldsa-signatures.txt` from
+Download the latest `qrl-webtools_v<version>.zip` and
+`qrl-webtools_v<version>_signatures.txt` from
 [GitHub Releases](https://github.com/theQRL/webtools/releases/latest).
 Verify the ML-DSA-87 signature as described in [RELEASE.md](RELEASE.md), extract
 the archive, disconnect the machine from the network, and open `index.html`
@@ -62,9 +62,10 @@ GitHub Actions replaces the previous CircleCI pipeline. CI runs linting, Node
 22/24 unit and format-conformance tests, dependency audits, deterministic-build
 checks, static single-file checks, and headless Chromium smoke tests.
 
-Signed tags build `qrl-webtools-<version>.zip`, sign the bundle with ML-DSA-87
-using the permanent context `qrl-webtools-github-releases-v1`, attest its build
-provenance, and publish the bundle plus `mldsa-signatures.txt`. See
+Signed tags build `qrl-webtools_v<version>.zip`, sign the bundle with ML-DSA-87
+under the permanent context `qrl-webtools-release-signatures` using theQRL
+organisation release key, attest its build provenance, and publish the bundle
+plus `qrl-webtools_v<version>_signatures.txt`. See
 [RELEASE.md](RELEASE.md) for maintainer setup and verification.
 
 ## Help

@@ -1,15 +1,22 @@
 <template>
-  <div class="card bg-base-200 shadow-lg mx-auto my-8 max-w-4xl">
-    <div class="card-body">
-      <h1 class="card-title text-3xl mb-4">Documentation</h1>
+  <div class="tool-page">
+    <div class="tool-heading">
+      <div class="kicker">Reference</div>
+      <h1>Documentation</h1>
+      <p>How each tool works, what it checks, and how to use the wallet generator safely.</p>
+    </div>
+    <div class="card tool-panel">
+      <div class="card-body">
 
       <div class="space-y-8">
         <p>QRL Web Tools is a collection of browser-based utilities for the Quantum Resistant Ledger. For maximum security when generating wallets, it is designed to be used in an offline environment. It is recommended to use this software from a bootable OS (e.g. Desktop Ubuntu distribution) without any network connection.</p>
 
-        <p>To run offline, download the latest zip and <code>mldsa-signatures.txt</code> from <a class="link link-primary" href="https://github.com/theQRL/webtools/releases/latest">GitHub Releases</a>, verify the ML-DSA-87 signature using the permanent context <code>qrl-webtools-github-releases-v1</code>, extract the zip, disconnect from the network, then open <code>index.html</code>. See the repository's <code>RELEASE.md</code> for the exact verification command.</p>
+        <p>To run offline, download the latest zip and its <code>_signatures.txt</code> from <a class="link link-primary" href="https://github.com/theQRL/webtools/releases/latest">GitHub Releases</a>, verify the ML-DSA-87 signature, extract the zip, disconnect from the network, then open <code>index.html</code>.</p>
+
+        <p>The quickest way to verify is the release verifier at <code>validate.theqrl.org</code>, which checks both files in your browser against theQRL organisation release key. Deliberately not a link: this page is built to run with the network off, and the offline bundle carries no outbound references beyond the ones already documented. To verify locally with <code>qrlft</code> instead, use the permanent context <code>qrl-webtools-release-signatures</code>. The repository's <code>RELEASE.md</code> has the exact command.</p>
 
         <!-- Address Validator -->
-        <div class="collapse collapse-arrow bg-base-100">
+        <div class="collapse collapse-arrow border border-base-content/10 bg-base-100/35">
           <input type="checkbox" />
           <div class="collapse-title text-xl font-medium">
             <font-awesome-icon icon="magnifying-glass" class="mr-2 text-primary" />
@@ -53,7 +60,7 @@
         </div>
 
         <!-- Mnemonic Validator -->
-        <div class="collapse collapse-arrow bg-base-100">
+        <div class="collapse collapse-arrow border border-base-content/10 bg-base-100/35">
           <input type="checkbox" />
           <div class="collapse-title text-xl font-medium">
             <font-awesome-icon icon="spell-check" class="mr-2 text-primary" />
@@ -91,7 +98,7 @@
         </div>
 
         <!-- Hexseed Validator -->
-        <div class="collapse collapse-arrow bg-base-100">
+        <div class="collapse collapse-arrow border border-base-content/10 bg-base-100/35">
           <input type="checkbox" />
           <div class="collapse-title text-xl font-medium">
             <font-awesome-icon icon="fingerprint" class="mr-2 text-primary" />
@@ -136,7 +143,7 @@
         </div>
 
         <!-- Wallet Generator -->
-        <div class="collapse collapse-arrow bg-base-100">
+        <div class="collapse collapse-arrow border border-base-content/10 bg-base-100/35">
           <input type="checkbox" />
           <div class="collapse-title text-xl font-medium">
             <font-awesome-icon icon="wallet" class="mr-2 text-primary" />
@@ -190,4 +197,5 @@
       </div>
     </div>
   </div>
+</div>
 </template>

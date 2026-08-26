@@ -1,9 +1,13 @@
 <template>
-  <div>
-    <div class="card bg-base-200 shadow-lg mx-auto my-8 max-w-4xl">
-      <div class="card-body">
-        <h1 class="card-title text-3xl justify-center mb-4">QRL Wallet Generator</h1>
+  <div class="tool-page">
+    <div class="tool-heading">
+      <div class="kicker">Create or restore</div>
+      <h1>QRL Wallet Generator</h1>
+      <p>Generate an XMSS wallet offline, or restore one from an existing mnemonic or hexseed.</p>
+    </div>
 
+    <div class="card tool-panel">
+      <div class="card-body">
         <!-- Loading State -->
         <div id="loading" v-show="!qrllibLoaded">
           <div class="flex flex-col items-center gap-2">
@@ -21,7 +25,7 @@
               <!-- Hash Function Select -->
               <div class="flex flex-col items-center gap-1">
                 <span class="text-sm font-medium">Hash function</span>
-                <select id="hashFunction" data-testid="hash-function" class="select select-bordered select-secondary w-48" v-model="selectedHash" @change="thisHash(selectedHash)">
+                <select id="hashFunction" data-testid="hash-function" class="select select-bordered w-full sm:w-48" v-model="selectedHash" @change="thisHash(selectedHash)">
                   <option value="SHAKE_128">SHAKE_128</option>
                   <option value="SHAKE_256">SHAKE_256</option>
                   <option value="SHA2_256">SHA2_256</option>
@@ -31,7 +35,7 @@
               <!-- Tree Height Select -->
               <div class="flex flex-col items-center gap-1">
                 <span class="text-sm font-medium">Tree height</span>
-                <select id="treeHeight" data-testid="tree-height" class="select select-bordered select-secondary w-64" v-model="selectedHeight" @change="thisHeight(selectedHeight)">
+                <select id="treeHeight" data-testid="tree-height" class="select select-bordered w-full sm:w-64" v-model="selectedHeight" @change="thisHeight(selectedHeight)">
                   <option :value="8">Height: 8, Signatures: 256</option>
                   <option :value="10">Height: 10, Signatures: 1,024</option>
                   <option :value="12">Height: 12, Signatures: 4,096</option>

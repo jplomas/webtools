@@ -11,6 +11,7 @@ import { decryptEnvelope } from '../src/wallet-envelope.js';
 // it is not provable by grepping.
 
 const ARTEFACT = resolve('dist/index.html');
+const ARTEFACT_ROOT_URL = `${pathToFileURL(ARTEFACT).href}#/`;
 const ARTEFACT_URL = `${pathToFileURL(ARTEFACT).href}#/wallet`;
 
 test.beforeAll(() => {
@@ -37,9 +38,33 @@ test('loads from file:// with no server and mounts', async ({ page }) => {
   await denyNetwork(page);
   await page.goto(ARTEFACT_URL);
 
-  await expect(page.locator('h1.card-title')).toHaveText('QRL Wallet Generator');
+  await expect(page.getByRole('heading', { name: 'QRL Wallet Generator', level: 1 })).toBeVisible();
   const appText = await page.locator('#app').innerText();
   expect(appText.length).toBeGreaterThan(100);
+});
+
+test('the Quantum Dawn shell and theme switch work in the offline build', async ({ page }) => {
+  await denyNetwork(page);
+  await page.goto(ARTEFACT_ROOT_URL);
+
+  await expect(page.getByRole('heading', { name: /Inspect, repair/ })).toBeVisible();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'qrl-dawn');
+  await page.getByRole('button', { name: 'Switch to light theme' }).click();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'qrl-dawn-light');
+  await expect(page.getByRole('button', { name: 'Switch to dark theme' })).toBeVisible();
+});
+
+test('standalone secret validators disable browser assistance and password-manager capture', async ({ page }) => {
+  await denyNetwork(page);
+
+  for (const route of ['mnemonic', 'hexseed']) {
+    await page.goto(`${pathToFileURL(ARTEFACT).href}#/${route}`);
+    const field = page.locator(route === 'mnemonic' ? '#mnemonic-input' : '#hexseed-input');
+    await expect(field).toHaveAttribute('spellcheck', 'false');
+    await expect(field).toHaveAttribute('autocomplete', 'off');
+    await expect(field).toHaveAttribute('autocapitalize', 'off');
+    await expect(field).toHaveAttribute('data-lpignore', 'true');
+  }
 });
 
 test('reports the QRL library as loaded only after probing it', async ({ page }) => {
@@ -269,5 +294,5 @@ test('a library load failure renders a visible message, not a blank page', async
   // Before this fix the page stayed blank forever with no message at all.
   await expect(page.locator('#app')).toContainText('could not start', { timeout: 60_000 });
   await expect(page.locator('#app')).toContainText('verify the release');
-  await expect(page.locator('h1.card-title')).toHaveCount(0);
+  await expect(page.getByRole('heading', { name: 'QRL Wallet Generator', level: 1 })).toHaveCount(0);
 });

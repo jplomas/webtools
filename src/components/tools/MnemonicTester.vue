@@ -1,21 +1,30 @@
 <template>
-  <div class="container mx-auto px-4 py-8 max-w-4xl">
-    <div class="text-center mb-8">
-      <h1 class="text-3xl font-bold mb-2">Mnemonic Validator</h1>
-      <p class="text-base-content/70">Validate QRL mnemonic phrases and check for common issues</p>
+  <div class="tool-page">
+    <div class="tool-heading">
+      <div class="kicker">Check a recovery phrase</div>
+      <h1>Mnemonic validator</h1>
+      <p>Validate all 34 words and repair spacing, case, or likely transcription errors.</p>
     </div>
 
-    <div class="card bg-base-100 shadow-xl">
+    <div class="card tool-panel">
       <div class="card-body">
         <div class="form-control">
           <div class="mb-2">
-            <div class="font-semibold">Enter Mnemonic Phrase</div>
+            <label for="mnemonic-input" class="font-semibold">Mnemonic phrase</label>
             <div class="text-sm text-base-content/60">34 words expected</div>
           </div>
           <textarea
             v-model="mnemonic"
-            class="textarea textarea-bordered w-full h-32 font-mono text-sm focus:textarea-secondary focus:border-secondary"
+            id="mnemonic-input"
+            class="textarea textarea-bordered h-32 w-full font-mono text-sm"
             placeholder="Enter your 34-word mnemonic phrase here..."
+            spellcheck="false"
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="off"
+            data-1p-ignore
+            data-lpignore="true"
+            data-bwignore
             @input="validateMnemonic"
           ></textarea>
         </div>
@@ -125,7 +134,7 @@
     </div>
 
     <!-- Info Card -->
-    <div class="card bg-base-200 mt-6">
+    <div class="card info-panel mt-6">
       <div class="card-body">
         <h3 class="card-title text-lg">About QRL Mnemonics</h3>
         <ul class="list-disc list-inside text-sm text-base-content/70 space-y-1">

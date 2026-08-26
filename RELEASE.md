@@ -3,35 +3,40 @@
 A signed `vMAJOR.MINOR.PATCH` tag runs
 `.github/workflows/release.yml`. The workflow verifies the tag against the
 committed maintainer allowlist, runs the full CI suite, creates
-`qrl-webtools-<version>.zip`, signs that bundle with ML-DSA-87, adds a GitHub
+`qrl-webtools_v<version>.zip`, signs that bundle with ML-DSA-87, adds a GitHub
 build-provenance attestation, and publishes the zip plus
-`mldsa-signatures.txt`.
+`qrl-webtools_v<version>_signatures.txt`.
 
 The former `shasum.256.asc` file is intentionally gone. A checksum generated
 beside an artefact detects transfer corruption but does not authenticate its
 publisher. The ML-DSA signature authenticates the exact zip bytes.
 
-## One-time ML-DSA setup
+## Signing key and context
 
-Generate a fresh ML-DSA keypair with qrlft. Do not reuse a legacy Dilithium
-hexseed: it would derive a different ML-DSA key even though both seed strings
-have the same length.
+Web Tools does not have a signing key of its own. It signs with theQRL
+organisation release key, the same key behind every signed theQRL product, whose
+public half is published as `theqrl-release-key.pub` in
+[theQRL/qrlft](https://github.com/theQRL/qrlft). One key means one thing for
+users to check once, instead of a new key to establish per repository.
 
-```bash
-qrlft new -a mldsa --context="qrl-webtools-github-releases-v1" webtools-release
-```
+Domain separation comes from the context string instead. Each product signs
+under `<product>-release-signatures`, so this repository uses
+`qrl-webtools-release-signatures` and qrlft uses `qrlft-release-signatures`. A
+signature made for one product therefore cannot be presented as belonging to
+another, even though both come from the same key.
 
-1. Store the contents of `webtools-release.private.hexseed` as the repository
-   Actions secret `MLDSA_HEXSEED`.
-2. Publish the public-key hex through a channel independent of the GitHub
-   release assets and record its fingerprint in project release documentation.
-3. Back up the private key and hexseed offline. Losing them prevents future
-   signatures from chaining to the published identity.
-4. Never substitute the context. The permanent verification context is
-   `qrl-webtools-github-releases-v1`.
+1. Store the organisation release hexseed as the repository Actions secret
+   `MLDSA_HEXSEED`. Do not generate a new keypair for this repository, and do
+   not reuse a legacy Dilithium hexseed: Dilithium and ML-DSA seeds are both 32
+   bytes, so the wrong one is accepted silently and derives a different key.
+2. Never change the context. `qrl-webtools-release-signatures` is permanent, and
+   changing it invalidates every signature already published under it.
+3. Keep the release artefact naming as `qrl-webtools_v<version>.zip`. Verifiers
+   read the product from the segment before the first underscore to decide which
+   context applies, so a name without one cannot be checked automatically.
 
-The workflow is pinned to the audited
-`theQRL/actions-mldsa-sign` v1.0.0 commit rather than a mutable tag.
+The workflow pins `theQRL/actions-mldsa-sign` to commit `97a05ab`, which is what
+the `v1.0.0` tag points at, rather than to the mutable tag itself.
 
 ## Maintainer tag-signing allowlist
 
@@ -52,23 +57,29 @@ them.
 
 ## Verify a release
 
-Download the zip and `mldsa-signatures.txt`. The signature file contains the
-signature hex followed by the filename. With the independently published
-ML-DSA public-key hex:
+Download the zip and `qrl-webtools_v<version>_signatures.txt`. Each line holds a
+signature followed by the filename it covers.
+
+The quickest check is [validate.theqrl.org](https://validate.theqrl.org): drop
+both files onto the page and it verifies them in the browser, working out the
+context from the filenames. To check it locally instead, fetch
+`theqrl-release-key.pub` from
+[theQRL/qrlft](https://github.com/theQRL/qrlft) and run:
 
 ```bash
-SIGNATURE=$(awk '$2 == "qrl-webtools-<version>.zip" { print $1 }' mldsa-signatures.txt)
+ZIP=qrl-webtools_v<version>.zip
+SIGNATURE=$(awk -v f="$ZIP" '$2 == f { print $1 }' qrl-webtools_v<version>_signatures.txt)
 qrlft verify -a mldsa \
-  --context="qrl-webtools-github-releases-v1" \
+  --context="qrl-webtools-release-signatures" \
   --signature="$SIGNATURE" \
-  --publickey="<published-public-key-hex>" \
-  qrl-webtools-<version>.zip
+  --pkfile=theqrl-release-key.pub \
+  "$ZIP"
 ```
 
 Also verify GitHub's build provenance:
 
 ```bash
-gh attestation verify qrl-webtools-<version>.zip --repo theQRL/webtools
+gh attestation verify qrl-webtools_v<version>.zip --repo theQRL/webtools
 ```
 
 For the strongest check, rebuild the tagged source and compare the zip's

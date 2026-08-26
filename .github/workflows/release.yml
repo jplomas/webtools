@@ -90,19 +90,25 @@ jobs:
         id: artefact
         run: |
           VERSION=$(node -p "require('./package.json').version")
-          NAME="qrl-webtools-${VERSION}.zip"
+          # <product>_<tag>… naming, matching other theQRL releases. Verifiers
+          # read the product from the first underscore-separated segment to work
+          # out which signing context applies, so the underscore is load-bearing.
+          NAME="qrl-webtools_v${VERSION}.zip"
           zip -j "$NAME" dist/index.html
           echo "name=$NAME" >> "$GITHUB_OUTPUT"
+          echo "signatures=qrl-webtools_v${VERSION}_signatures.txt" >> "$GITHUB_OUTPUT"
 
-      # FIPS 204 signature over the actual release bundle. The context is a
-      # permanent domain-separation value and must also be used by verifiers.
+      # FIPS 204 signature over the actual release bundle, made with theQRL
+      # organisation release key. Every product signs under its own
+      # <product>-release-signatures context, which is permanent: changing it
+      # invalidates every signature already published against it.
       - name: Sign bundle with ML-DSA-87
-        uses: theQRL/actions-mldsa-sign@dd421c04a5a8657895df2275cdcdce9b9bb0a3db # v1.0.0
+        uses: theQRL/actions-mldsa-sign@97a05abefff417d595c28c7b5d9d886ebe2fe9d0 # v1.0.0
         with:
           patterns: ${{ steps.artefact.outputs.name }}
           hexseed: ${{ secrets.MLDSA_HEXSEED }}
-          context: qrl-webtools-github-releases-v1
-          output: mldsa-signatures.txt
+          context: qrl-webtools-release-signatures
+          output: ${{ steps.artefact.outputs.signatures }}
 
       - name: Attest build provenance
         uses: actions/attest-build-provenance@0f67c3f4856b2e3261c31976d6725780e5e4c373 # v4.1.1
@@ -114,10 +120,11 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ github.event.inputs.tag || github.ref_name }}
           NAME: ${{ steps.artefact.outputs.name }}
+          SIGNATURES: ${{ steps.artefact.outputs.signatures }}
         run: |
           test -f "$NAME" || { echo "::error::$NAME missing"; exit 1; }
-          test -s mldsa-signatures.txt || { echo "::error::ML-DSA signature missing"; exit 1; }
-          gh release create "$TAG" "$NAME" mldsa-signatures.txt \
+          test -s "$SIGNATURES" || { echo "::error::ML-DSA signature missing"; exit 1; }
+          gh release create "$TAG" "$NAME" "$SIGNATURES" \
             --title "$TAG" \
             --generate-notes \
             --verify-tag

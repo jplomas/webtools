@@ -13,7 +13,8 @@ proof of concept when available.
 The wallet generator depends on these properties:
 
 1. **The release bundle is authentic.** The zip is signed with ML-DSA-87 under
-   the permanent context `qrl-webtools-github-releases-v1` and carries a
+   the permanent context `qrl-webtools-release-signatures`, using theQRL
+   organisation release key, and carries a
    GitHub build-provenance attestation; see [RELEASE.md](RELEASE.md).
 2. **The generated seed is unpredictable.** Entropy comes from the browser
    CSPRNG through a fail-closed wrapper that rejects missing, throwing,

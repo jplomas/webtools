@@ -1,21 +1,30 @@
 <template>
-  <div class="container mx-auto px-4 py-8 max-w-4xl">
-    <div class="text-center mb-8">
-      <h1 class="text-3xl font-bold mb-2">Hexseed Validator</h1>
-      <p class="text-base-content/70">Validate QRL hexseed format and check for common issues</p>
+  <div class="tool-page">
+    <div class="tool-heading">
+      <div class="kicker">Check seed material</div>
+      <h1>Hexseed validator</h1>
+      <p>Check length, case, whitespace, and invalid characters without sending the seed anywhere.</p>
     </div>
 
-    <div class="card bg-base-100 shadow-xl">
+    <div class="card tool-panel">
       <div class="card-body">
         <div class="form-control">
           <div class="mb-2">
-            <div class="font-semibold">Enter Hexseed</div>
+            <label for="hexseed-input" class="font-semibold">Hexseed</label>
             <div class="text-sm text-base-content/60">102 hex characters expected</div>
           </div>
           <textarea
             v-model="hexseed"
-            class="textarea textarea-bordered w-full h-24 font-mono text-sm focus:textarea-secondary focus:border-secondary"
+            id="hexseed-input"
+            class="textarea textarea-bordered h-24 w-full font-mono text-sm"
             placeholder="Enter your hexseed here..."
+            spellcheck="false"
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="off"
+            data-1p-ignore
+            data-lpignore="true"
+            data-bwignore
           ></textarea>
         </div>
 
@@ -92,7 +101,7 @@
     </div>
 
     <!-- Info Card -->
-    <div class="card bg-base-200 mt-6">
+    <div class="card info-panel mt-6">
       <div class="card-body">
         <h3 class="card-title text-lg">About QRL Hexseeds</h3>
         <ul class="list-disc list-inside text-sm text-base-content/70 space-y-1">
