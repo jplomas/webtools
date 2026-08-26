@@ -1,0 +1,32 @@
+version: 2
+# CI gates the runtime tree at --audit-level=low and the build tree at high;
+# everything else is tracked here so a dependency does not quietly rot inside
+# an artefact users are told to trust.
+updates:
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+    cooldown:
+      default-days: 7
+    groups:
+      dev-dependencies:
+        patterns:
+          - '*'
+        exclude-patterns:
+          # Cryptography and the QRL library move on their own schedule and
+          # get reviewed individually, not batched.
+          - '@theqrl/*'
+          - 'scrypt-js'
+    commit-message:
+      prefix: 'deps'
+
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: 'ci'
+

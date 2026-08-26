@@ -1,0 +1,26 @@
+# zizmor configuration for webtools
+#
+# zizmor (https://docs.zizmor.sh) is a static-analysis linter for GitHub
+# Actions workflows. It runs as a CI gate (.github/workflows/actionlint.yml)
+# in pedantic mode — any new finding fails the build.
+#
+# The 2026-08 security review found a template injection in release.yml that
+# turned a pushed tag name into shell code, and a signature gate that a
+# substring could satisfy. Those are exactly the classes this tool detects, so
+# adding exceptions here should be rare and well justified: the default is to
+# fix the workflow, not to suppress the finding.
+
+rules:
+  cache-poisoning:
+    ignore:
+      # release.yml deliberately does NOT set `cache: npm` on setup-node — see
+      # the comment at that step. zizmor flags the action itself on the
+      # assumption that caching may be on by default; with no `cache` input
+      # and no lockfile cache key, nothing is restored. Suppressed at Low
+      # confidence rather than adding a no-op input to silence it.
+      #
+      # ci.yml keeps its cache on purpose: it is already the permissive,
+      # all-branches workflow, so it is the writer rather than the victim, and
+      # nothing it produces is published.
+      - release.yml
+

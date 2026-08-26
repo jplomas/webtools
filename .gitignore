@@ -103,6 +103,8 @@ _site/
 # Vite
 .vite/
 dist/
+test-results/
+playwright-report/
 
 # macOS
 .DS_Store

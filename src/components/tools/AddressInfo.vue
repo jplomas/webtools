@@ -1,21 +1,26 @@
 <template>
-  <div class="container mx-auto px-4 py-8 max-w-4xl">
-    <div class="text-center mb-8">
-      <h1 class="text-3xl font-bold mb-2">Address Validator</h1>
-      <p class="text-base-content/70">Validate QRL addresses and view their properties</p>
+  <div class="tool-page">
+    <div class="tool-heading">
+      <div class="kicker">Inspect an address</div>
+      <h1>Address validator</h1>
+      <p>Check a QRL address and decode the properties stored in its descriptor.</p>
     </div>
 
-    <div class="card bg-base-100 shadow-xl">
+    <div class="card tool-panel">
       <div class="card-body">
         <div class="form-control">
           <div class="mb-2">
-            <div class="font-semibold">Enter QRL Address</div>
+            <label for="qrl-address" class="font-semibold">QRL address</label>
           </div>
           <input
             v-model="address"
+            id="qrl-address"
             type="text"
-            class="input input-bordered w-full font-mono text-sm focus:input-secondary focus:border-secondary"
+            class="input input-bordered w-full font-mono text-sm"
             placeholder="Q010500..."
+            autocomplete="off"
+            autocapitalize="off"
+            spellcheck="false"
             @input="validateAddress"
           />
         </div>
@@ -113,7 +118,7 @@
 
     <!-- Info Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-      <div class="card bg-base-200">
+      <div class="card info-panel">
         <div class="card-body">
           <h3 class="card-title text-lg">Tree Heights</h3>
           <ul class="text-sm text-base-content/70 space-y-1">
@@ -128,7 +133,7 @@
           </ul>
         </div>
       </div>
-      <div class="card bg-base-200">
+      <div class="card info-panel">
         <div class="card-body">
           <h3 class="card-title text-lg">Hash Functions</h3>
           <ul class="text-sm text-base-content/70 space-y-1">
