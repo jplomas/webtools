@@ -80,15 +80,17 @@
         <div>
           <p v-if="qrllibLoaded" class="flex items-center gap-2 text-base-content/75">
             <span class="size-2 rounded-full bg-success" aria-hidden="true"></span>
-            QRL Library loaded
-            <span class="font-mono text-xs text-base-content/45">v{{ qrllibVersion }}</span>
+            <span class="flex items-baseline gap-2">
+              <span>QRL Library loaded</span>
+              <span class="font-mono text-xs text-base-content/45">v{{ qrllibVersion }}</span>
+            </span>
           </p>
           <p v-else-if="qrllibLoadFailed" class="flex items-center gap-2 text-error">
             <span class="size-2 rounded-full bg-error" aria-hidden="true"></span>
             QRL Library failed to load. Do not use wallet features.
           </p>
         </div>
-        <p class="flex flex-wrap gap-x-3 gap-y-1">
+        <p class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
           <span class="font-mono text-xs tabular-nums">{{ buildId }}</span>
           <a class="link link-hover" href="https://www.theqrl.org" rel="noopener">theqrl.org</a>
           <a class="link link-hover" href="https://docs.theqrl.org" rel="noopener">docs</a>
