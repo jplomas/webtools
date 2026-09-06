@@ -27,7 +27,7 @@ function inlinePublicAssets() {
     enforce: 'post',
     transformIndexHtml(html) {
       // Inline qrllib.js
-      const qrllibPath = resolve(__dirname, 'public/qrllib.js')
+      const qrllibPath = resolve(import.meta.dirname, 'public/qrllib.js')
       const qrllibContent = readFileSync(qrllibPath, 'utf-8')
       html = html.replace(
         /<script src="\.\/qrllib\.js"><\/script>/,
@@ -35,7 +35,7 @@ function inlinePublicAssets() {
       )
 
       // Inline favicon
-      const faviconPath = resolve(__dirname, 'public/favicon.ico')
+      const faviconPath = resolve(import.meta.dirname, 'public/favicon.ico')
       const faviconContent = readFileSync(faviconPath)
       const faviconBase64 = faviconContent.toString('base64')
       html = html.replace(
@@ -44,7 +44,7 @@ function inlinePublicAssets() {
       )
 
       // Inline logo.svg
-      const logoPath = resolve(__dirname, 'public/logo.svg')
+      const logoPath = resolve(import.meta.dirname, 'public/logo.svg')
       const logoContent = readFileSync(logoPath, 'utf-8')
       const logoBase64 = Buffer.from(logoContent).toString('base64')
       html = html.replace(
@@ -61,11 +61,11 @@ export default defineConfig({
   plugins: [vue(), viteSingleFile(), inlinePublicAssets()],
   resolve: {
     alias: {
-      '@': resolve(__dirname, 'src'),
+      '@': resolve(import.meta.dirname, 'src'),
       buffer: 'buffer',
-      dompurify: resolve(__dirname, 'src/empty-module.js'),
-      html2canvas: resolve(__dirname, 'src/empty-module.js'),
-      canvg: resolve(__dirname, 'src/empty-module.js'),
+      dompurify: resolve(import.meta.dirname, 'src/empty-module.js'),
+      html2canvas: resolve(import.meta.dirname, 'src/empty-module.js'),
+      canvg: resolve(import.meta.dirname, 'src/empty-module.js'),
     },
   },
   define: {
@@ -80,11 +80,6 @@ export default defineConfig({
   build: {
     assetsInlineLimit: 100000000, // Inline all assets regardless of size
     cssCodeSplit: false,
-    rollupOptions: {
-      output: {
-        inlineDynamicImports: true,
-      },
-    },
   },
   // Note: vite-plugin-singlefile creates a standalone index.html
   // The other files (qrllib.js, favicon.ico, etc.) in dist/ are build artifacts

@@ -149,7 +149,12 @@ elif ! qrllib_version=$(node -p \
   "const p=require('$QRLLIB_PKG');p.dependencies?.qrllib ?? p.version" 2>/dev/null) \
   || [ -z "$qrllib_version" ]; then
   bad 'could not determine the installed qrllib version'
-elif grep -a -q -F "qrllibVersion:\"$qrllib_version\"" "$FILE"; then
+# Which quote character the minifier picks is its own business: Vite 8's
+# rolldown/oxc minifier emits backticks where esbuild emitted double quotes.
+# The property under test is that the constant carries the installed version,
+# so accept any of the three JavaScript string delimiters and match the
+# version literally (dots escaped) rather than as a regex wildcard.
+elif grep -a -q -E "qrllibVersion:[\"'\`]${qrllib_version//./\\.}[\"'\`]" "$FILE"; then
   note "qrllib version constant: $qrllib_version"
 else
   bad "built artefact does not carry the installed qrllib version ($qrllib_version)"
