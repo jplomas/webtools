@@ -95,20 +95,26 @@ jobs:
           # out which signing context applies, so the underscore is load-bearing.
           NAME="qrl-webtools_v${VERSION}.zip"
           zip -j "$NAME" dist/index.html
-          echo "name=$NAME" >> "$GITHUB_OUTPUT"
-          echo "signatures=qrl-webtools_v${VERSION}_signatures.txt" >> "$GITHUB_OUTPUT"
+          {
+            echo "name=$NAME"
+            echo "signatures=qrl-webtools_v${VERSION}_signatures.txt"
+            echo "manifest=qrl-webtools_v${VERSION}_manifest.json"
+          } >> "$GITHUB_OUTPUT"
 
       # FIPS 204 signature over the actual release bundle, made with theQRL
       # organisation release key. Every product signs under its own
       # <product>-release-signatures context, which is permanent: changing it
       # invalidates every signature already published against it.
       - name: Sign bundle with ML-DSA-87
-        uses: theQRL/actions-mldsa-sign@97a05abefff417d595c28c7b5d9d886ebe2fe9d0 # v1.0.0
+        uses: theQRL/actions-mldsa-sign@266287af83f2b1a8ec4c6e13149d0ecf6cd16cc5 # v2.0.0
         with:
           patterns: ${{ steps.artefact.outputs.name }}
           hexseed: ${{ secrets.MLDSA_HEXSEED }}
           context: qrl-webtools-release-signatures
           output: ${{ steps.artefact.outputs.signatures }}
+          product: qrl-webtools
+          tag: ${{ github.event.inputs.tag || github.ref_name }}
+          manifest: ${{ steps.artefact.outputs.manifest }}
 
       - name: Attest build provenance
         uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
@@ -121,10 +127,13 @@ jobs:
           TAG: ${{ github.event.inputs.tag || github.ref_name }}
           NAME: ${{ steps.artefact.outputs.name }}
           SIGNATURES: ${{ steps.artefact.outputs.signatures }}
+          MANIFEST: ${{ steps.artefact.outputs.manifest }}
         run: |
           test -f "$NAME" || { echo "::error::$NAME missing"; exit 1; }
           test -s "$SIGNATURES" || { echo "::error::ML-DSA signature missing"; exit 1; }
-          gh release create "$TAG" "$NAME" "$SIGNATURES" \
+          test -s "$MANIFEST" || { echo "::error::signed manifest missing"; exit 1; }
+          test -s "$MANIFEST.sig" || { echo "::error::manifest signature missing"; exit 1; }
+          gh release create "$TAG" "$NAME" "$SIGNATURES" "$MANIFEST" "$MANIFEST.sig" \
             --title "$TAG" \
             --generate-notes \
             --verify-tag

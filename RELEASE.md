@@ -5,7 +5,9 @@ A signed `vMAJOR.MINOR.PATCH` tag runs
 committed maintainer allowlist, runs the full CI suite, creates
 `qrl-webtools_v<version>.zip`, signs that bundle with ML-DSA-87, adds a GitHub
 build-provenance attestation, and publishes the zip plus
-`qrl-webtools_v<version>_signatures.txt`.
+`qrl-webtools_v<version>_signatures.txt`, plus a signed release manifest
+(`qrl-webtools_v<version>_manifest.json` and its `.sig`) binding the zip's digest
+to its filename, product and tag.
 
 The former `shasum.256.asc` file is intentionally gone. A checksum generated
 beside an artefact detects transfer corruption but does not authenticate its
@@ -35,8 +37,8 @@ another, even though both come from the same key.
    read the product from the segment before the first underscore to decide which
    context applies, so a name without one cannot be checked automatically.
 
-The workflow pins `theQRL/actions-mldsa-sign` to commit `97a05ab`, which is what
-the `v1.0.0` tag points at, rather than to the mutable tag itself.
+The workflow pins `theQRL/actions-mldsa-sign` to commit `266287a`, which is what
+the `v2.0.0` tag points at, rather than to the mutable tag itself.
 
 ## Maintainer tag-signing allowlist
 
