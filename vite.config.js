@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { resolve } from 'path'
-import { viteSingleFile } from 'vite-plugin-singlefile'
+import { inlineBundle } from './scripts/vite-plugin-inline-bundle.mjs'
 import { readFileSync } from 'fs'
 import { execSync } from 'node:child_process'
 
@@ -58,7 +58,7 @@ function inlinePublicAssets() {
 }
 
 export default defineConfig({
-  plugins: [vue(), viteSingleFile(), inlinePublicAssets()],
+  plugins: [vue(), inlineBundle(), inlinePublicAssets()],
   resolve: {
     alias: {
       '@': resolve(import.meta.dirname, 'src'),
@@ -81,7 +81,7 @@ export default defineConfig({
     assetsInlineLimit: 100000000, // Inline all assets regardless of size
     cssCodeSplit: false,
   },
-  // Note: vite-plugin-singlefile creates a standalone index.html
+  // Note: inlineBundle creates a standalone index.html
   // The other files (qrllib.js, favicon.ico, etc.) in dist/ are build artifacts
   // and can be safely deleted - they are not referenced by the HTML
 })
