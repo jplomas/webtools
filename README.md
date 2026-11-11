@@ -34,7 +34,8 @@ test suite against `@theqrl/wallet-helpers`.
 
 ## Developing
 
-Requirements: Node.js 22 or 24 (see `.nvmrc`) and npm.
+Requirements: Node.js 22.13.0 or later in the 22.x line, or Node.js 24 or later,
+and npm. The default development version is Node.js 22 (see `.nvmrc`).
 
 ```bash
 npm ci

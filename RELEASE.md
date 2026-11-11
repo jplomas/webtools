@@ -37,8 +37,8 @@ another, even though both come from the same key.
    read the product from the segment before the first underscore to decide which
    context applies, so a name without one cannot be checked automatically.
 
-The workflow pins `theQRL/actions-mldsa-sign` to commit `266287a`, which is what
-the `v2.0.0` tag points at, rather than to the mutable tag itself.
+The workflow pins `theQRL/actions-mldsa-sign` to commit `4d9a45b`, which is what
+the `v3.0.0` tag points at, rather than to the mutable tag itself.
 
 ## Maintainer tag-signing allowlist
 
