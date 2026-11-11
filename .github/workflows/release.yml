@@ -106,7 +106,7 @@ jobs:
       # <product>-release-signatures context, which is permanent: changing it
       # invalidates every signature already published against it.
       - name: Sign bundle with ML-DSA-87
-        uses: theQRL/actions-mldsa-sign@266287af83f2b1a8ec4c6e13149d0ecf6cd16cc5 # v2.0.0
+        uses: theQRL/actions-mldsa-sign@4d9a45b39b989ea244c88fc217fcda794ae94026 # v3.0.0
         with:
           patterns: ${{ steps.artefact.outputs.name }}
           hexseed: ${{ secrets.MLDSA_HEXSEED }}
